@@ -1,0 +1,13 @@
+[package]
+name = "ghl"
+version = "0.1.0"
+authors = ["Rrogntudju"]
+edition = "2021"
+
+[dependencies]
+minreq = { version = "2", features = ["https"] }
+soup = "0.5"
+url = "2"
+regex = "1"
+
+
