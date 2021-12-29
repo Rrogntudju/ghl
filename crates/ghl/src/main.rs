@@ -1,4 +1,5 @@
 use regex::Regex;
+use reqwest::blocking::Client;
 use soup::prelude::*;
 use std::env::args;
 use std::error::Error;
@@ -12,8 +13,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         Some(download) => download,
         None => return Err("Fichier à télécharger manquant".into()),
     };
-    let page = minreq::get(url_latest.as_str()).with_timeout(10).send()?;
-    let soup = Soup::new(page.as_str()?);
+    let page = Client::new().get(url_latest).send()?.text()?;
+    let soup = Soup::new(&page);
     let regex = Regex::new(&format!(r"^.*?/{}$", download.replace(".", r"\.")))?;
     match soup.tag("a").attr("href", regex).find() {
         Some(tag) => println!("https://github.com{}", tag.get("href").unwrap()),
