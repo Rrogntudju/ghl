@@ -1,5 +1,6 @@
 use regex::Regex;
 use reqwest::blocking::Client;
+use rulex::Rulex;
 use soup::prelude::*;
 use std::env::args;
 use std::error::Error;
@@ -15,8 +16,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
     let page = Client::new().get(url_latest).send()?.text()?;
     let soup = Soup::new(&page);
-    let regex = Regex::new(&format!(r"^.*?/{}$", download.replace(".", r"\.")))?;
-    match soup.tag("a").attr("href", regex).find() {
+    let regex = Rulex::parse_and_compile(&format!(r"<% [.]* '/{download}' %>"), Default::default())?;
+    match soup.tag("a").attr("href", Regex::new(&regex)?).find() {
         Some(tag) => println!("https://github.com{}", tag.get("href").unwrap()),
         None => return Err("Fichier à télécharger introuvable".into()),
     };
