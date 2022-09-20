@@ -1,6 +1,5 @@
 [package]
 name = "ghl"
-
 version = "0.2.0"
 authors = ["Rrogntudju"]
 edition = "2021"
@@ -8,7 +7,6 @@ edition = "2021"
 [dependencies]
 reqwest = { version = "0.11", features = ["blocking"] }
 soup = "0.5"
-url = "2"
 regex = "1"
 
 
