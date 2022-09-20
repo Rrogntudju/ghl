@@ -11,9 +11,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
     let page = Client::new().get(url_latest).send()?.text()?;
     let soup = Soup::new(&page);
-    let regex = Regex::new(r"^Release (.*) · cloudflare/cloudflared · GitHub$")?;
     match soup.tag("title").find() {
         Some(titre) => {
+            let regex = Regex::new(r"^Release (.*) · cloudflare/cloudflared · GitHub$")?;
             if let Some(captures) = regex.captures(&titre.text()) {
                 println!("{}", captures.get(1).unwrap().as_str());
                 Ok(())
